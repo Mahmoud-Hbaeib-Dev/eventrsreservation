@@ -1,0 +1,117 @@
+<div class="manage-events-container">
+    <h1>Manage My Events</h1>
+    <div *ngIf="loading" class="loading">Loading events...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <table *ngIf="!loading && !error && events.length > 0" class="events-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Rejection Comment</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let event of events">
+                <td>{{ event.title }}</td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.startTime }}</td>
+                <td>{{ event.endTime }}</td>
+                <td>{{ event.category }}</td>
+                <td>
+                    <span class="status-badge" [ngClass]="{
+              pending: event.status === 'pending',
+              accepted: event.status === 'accepted',
+              rejected: event.status === 'rejected'
+            }" [title]="
+              event.status === 'rejected'
+                ? event.rejectionComment && event.rejectionComment.trim()
+                  ? event.rejectionComment
+                  : 'No comment'
+                : event.status
+            ">
+            <ng-container [ngSwitch]="event.status">
+              <span *ngSwitchCase="'pending'">&#x23F3;</span>
+                    <!-- Hourglass -->
+                    <span *ngSwitchCase="'accepted'">&#x2714;&#xFE0F;</span>
+                    <!-- Checkmark -->
+                    <span *ngSwitchCase="'rejected'">&#x26A0;&#xFE0F;</span>
+                    <!-- Warning -->
+                    <span *ngSwitchDefault>&#x2753;</span>
+                    <!-- Question -->
+                    </ng-container>
+                    {{ event.status || "pending" }}
+                    </span>
+                </td>
+                <td>
+                    <span *ngIf="event.status === 'rejected'" class="rejection-comment" [title]="
+              event.rejectionComment && event.rejectionComment.trim()
+                ? event.rejectionComment
+                : 'No comment'
+            ">
+            {{
+              event.rejectionComment && event.rejectionComment.trim()
+                ? event.rejectionComment
+                : "####"
+            }}
+          </span>
+                </td>
+                <td>
+                    <div class="action-btns">
+                        <button class="edit-btn" (click)="editEvent(event.id)">Edit</button>
+                        <button class="delete-btn" (click)="deleteEvent(event.id)">
+              Delete
+            </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="!loading && !error && events.length === 0" class="no-events">
+        No events found for your venue.
+    </div>
+    <div class="modal-backdrop" *ngIf="showEditModal" (click)="closeEditModal()"></div>
+    <div class="edit-modal" *ngIf="showEditModal && eventToEdit">
+        <form class="edit-form" (ngSubmit)="onEditSubmit()" (click)="$event.stopPropagation()">
+            <h2>Edit Event</h2>
+            <div class="form-row">
+                <label>Title</label>
+                <input [(ngModel)]="eventToEdit.title" name="title" required />
+            </div>
+            <div class="form-row">
+                <label>Date</label>
+                <input [(ngModel)]="eventToEdit.date" name="date" type="date" required />
+            </div>
+            <div class="form-row">
+                <label>Start Time</label>
+                <input [(ngModel)]="eventToEdit.startTime" name="startTime" type="time" required />
+            </div>
+            <div class="form-row">
+                <label>End Time</label>
+                <input [(ngModel)]="eventToEdit.endTime" name="endTime" type="time" required />
+            </div>
+            <div class="form-row">
+                <label>Price</label>
+                <input [(ngModel)]="eventToEdit.price" name="price" type="number" min="0" required />
+            </div>
+            <div class="form-row">
+                <label>Capacity</label>
+                <input [(ngModel)]="eventToEdit.capacity" name="capacity" type="number" min="1" required />
+            </div>
+            <div class="form-row">
+                <label>Description</label>
+                <textarea [(ngModel)]="eventToEdit.description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="cancel-btn" (click)="closeEditModal()">
+          Cancel
+        </button>
+            </div>
+        </form>
+    </div>
+</div>

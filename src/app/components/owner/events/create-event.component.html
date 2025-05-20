@@ -1,0 +1,123 @@
+<div class="create-event-container">
+    <h1>Create New Event</h1>
+    <form [formGroup]="eventForm" (ngSubmit)="submitEvent()" class="event-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Title</label>
+                <input formControlName="title" type="text" placeholder="Event Title" />
+                <div class="error" *ngIf="
+            eventForm.get('title')?.invalid && eventForm.get('title')?.touched
+          ">
+                    Title is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Venue</label>
+                <div class="venue-info" *ngIf="ownerVenue">
+                    <h3>{{ ownerVenue.name }}</h3>
+                </div>
+                <div *ngIf="loadingVenue" class="loading">
+                    Loading venue information...
+                </div>
+                <div *ngIf="venueError" class="error">{{ venueError }}</div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Category</label>
+                <select formControlName="categoryId">
+          <option value="">Select a category</option>
+          <option *ngFor="let category of categories" [value]="category.id"> 
+            {{ category.name }}
+          </option>
+        </select>
+                <div *ngIf="loadingCategories" class="loading">
+                    Loading categories...
+                </div>
+                <div *ngIf="categoryError" class="error">{{ categoryError }}</div>
+                <div class="error" *ngIf="
+            eventForm.get('categoryId')?.invalid &&
+            eventForm.get('categoryId')?.touched
+          ">
+                    Category is required.
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Date</label>
+                <input formControlName="date" type="date" />
+                <div class="error" *ngIf="
+            eventForm.get('date')?.invalid && eventForm.get('date')?.touched
+          ">
+                    Date is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Start Time</label>
+                <input formControlName="startTime" type="time" />
+                <div class="error" *ngIf="
+            eventForm.get('startTime')?.invalid &&
+            eventForm.get('startTime')?.touched
+          ">
+                    Start time is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label>End Time</label>
+                <input formControlName="endTime" type="time" />
+                <div class="error" *ngIf="
+            eventForm.get('endTime')?.invalid &&
+            eventForm.get('endTime')?.touched
+          ">
+                    End time is required.
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Price</label>
+                <input formControlName="price" type="number" min="0" placeholder="Price" />
+                <div class="error" *ngIf="
+            eventForm.get('price')?.invalid && eventForm.get('price')?.touched
+          ">
+                    Price is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Capacity</label>
+                <input formControlName="capacity" type="number" min="1" placeholder="Capacity" />
+                <div class="error" *ngIf="
+            eventForm.get('capacity')?.invalid &&
+            eventForm.get('capacity')?.touched
+          ">
+                    Capacity is required.
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea formControlName="description" rows="4" placeholder="Event Description"></textarea>
+            <div class="error" *ngIf="
+          eventForm.get('description')?.invalid &&
+          eventForm.get('description')?.touched
+        ">
+                Description is required.
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Event Image</label>
+            <input type="file" (change)="onImageSelected($event)" accept="image/*" />
+            <div *ngIf="uploadingImage" class="uploading">Uploading...</div>
+            <div *ngIf="uploadError" class="error">{{ uploadError }}</div>
+            <div class="image-preview" *ngIf="imagePreview">
+                <img [src]="imagePreview" alt="Event preview" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="save-btn" [disabled]="eventForm.invalid || uploadingImage">
+        Create Event
+      </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a routerLink="/" class="logo">EventReserve</a>
+    </div>
+
+    <div class="navbar-menu">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item"
+        >Home</a
+      >
+      <a routerLink="/events" routerLinkActive="active" class="nav-item"
+        >Events</a
+      >
+      <a
+        *ngIf="currentUser"
+        routerLink="/my-reservations"
+        routerLinkActive="active"
+        class="nav-item"
+        >My Reservations</a
+      >
+      <a routerLink="/about" routerLinkActive="active" class="nav-item"
+        >About</a
+      >
+    </div>
+
+    <div class="navbar-end">
+      <ng-container *ngIf="!currentUser; else loggedIn">
+        <a routerLink="/auth/login" class="nav-item login-btn">Login</a>
+        <a routerLink="/auth/register" class="nav-item register-btn"
+          >Register</a
+        >
+      </ng-container>
+      <ng-template #loggedIn>
+        <a
+          *ngIf="currentUser"
+          [routerLink]="getProfileRoute()"
+          class="profile-btn"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ currentUser.role === "admin" ? "Dashboard" : "Profile" }}
+        </a>
+        <button class="nav-item logout-btn" (click)="logout()">Logout</button>
+      </ng-template>
+    </div>
+  </div>
+</nav>

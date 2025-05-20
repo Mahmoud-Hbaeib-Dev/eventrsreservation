@@ -1,0 +1,130 @@
+<div class="dashboard-container">
+  <!-- Floating shapes for background effect -->
+  <div class="floating-shapes">
+    <div class="shape one"></div>
+    <div class="shape two"></div>
+    <div class="shape three"></div>
+  </div>
+
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div
+      style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap"
+    >
+      <h1>Welcome Back, {{ (authService.currentUser$ | async)?.username }}</h1>
+      <button class="profile-btn" routerLink="/client/profile">Profile</button>
+    </div>
+    <p>Here's your reservation and payment history</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading your data...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error">
+    <i data-feather="alert-circle"></i>
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Main Content -->
+  <div class="dashboard-content" *ngIf="!loading && !error">
+    <!-- Reservation History -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Reservation History</h2>
+        <button class="view-all-btn" routerLink="/client/reservations">
+          View All
+        </button>
+      </div>
+      <div class="reservations-list" *ngIf="reservations.length > 0">
+        <div class="reservation-item" *ngFor="let reservation of reservations">
+          <div class="reservation-header">
+            <h3>{{ reservation.event?.title || "Unknown Event" }}</h3>
+            <span
+              class="status-badge"
+              [class]="getStatusClass(reservation.status)"
+            >
+              <i [attr.data-feather]="getStatusIcon(reservation.status)"></i>
+              {{ reservation.status }}
+            </span>
+          </div>
+          <div class="reservation-details">
+            <p>
+              <i data-feather="calendar"></i>
+              {{ reservation.event?.date | date : "mediumDate" }}
+            </p>
+            <p>
+              <i data-feather="clock"></i> {{ reservation.event?.startTime }} -
+              {{ reservation.event?.endTime }}
+            </p>
+            <p>
+              <i data-feather="map-pin"></i> Venue #{{
+                reservation.event?.venueId
+              }}
+            </p>
+          </div>
+          <div class="reservation-footer">
+            <span class="price">${{ reservation.totalPrice }}</span>
+            <button
+              class="details-btn"
+              [routerLink]="['/client/reservations', reservation.id]"
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="reservations.length === 0">
+        <i data-feather="calendar"></i>
+        <p>No reservations found</p>
+        <button class="primary-btn" routerLink="/events">Browse Events</button>
+      </div>
+    </div>
+
+    <!-- Payment History -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Payment History</h2>
+        <button class="view-all-btn" routerLink="/client/payments">
+          View All
+        </button>
+      </div>
+      <div class="payments-list" *ngIf="payments.length > 0">
+        <div class="payment-item" *ngFor="let payment of payments">
+          <div class="payment-header">
+            <h3>{{ payment.eventTitle }}</h3>
+            <span class="status-badge" [class]="getStatusClass(payment.status)">
+              <i [attr.data-feather]="getStatusIcon(payment.status)"></i>
+              {{ payment.status }}
+            </span>
+          </div>
+          <div class="payment-details">
+            <p>
+              <i data-feather="calendar"></i>
+              {{ payment.date | date : "mediumDate" }}
+            </p>
+            <p>
+              <i data-feather="credit-card"></i> {{ payment.paymentMethod }}
+            </p>
+          </div>
+          <div class="payment-footer">
+            <span class="price">${{ payment.amount }}</span>
+            <button
+              class="details-btn"
+              [routerLink]="['/client/payments', payment.id]"
+            >
+              View Receipt
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="payments.length === 0">
+        <i data-feather="credit-card"></i>
+        <p>No payment history found</p>
+      </div>
+    </div>
+  </div>
+</div>

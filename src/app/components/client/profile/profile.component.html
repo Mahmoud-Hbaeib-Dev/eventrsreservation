@@ -1,0 +1,230 @@
+<div class="profile-container">
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <div class="profile-content" *ngIf="!loading; else loadingTemplate">
+    <div class="profile-header-card">
+      <div class="profile-avatar">
+        <div class="avatar-circle">
+          <ng-container *ngIf="user?.avatar; else initialsOrIcon">
+            <img [src]="user.avatar" alt="Avatar" class="avatar-img" />
+          </ng-container>
+          <ng-template #initialsOrIcon>
+            <span *ngIf="user?.username">{{
+              getInitials(user?.username || "")
+            }}</span>
+            <i
+              *ngIf="!user?.username"
+              class="default-avatar-icon"
+              data-feather="user"
+            ></i>
+          </ng-template>
+          <label class="avatar-upload">
+            <input
+              #avatarInput
+              type="file"
+              accept="image/*"
+              (change)="onAvatarSelected($event)"
+              [disabled]="uploadingAvatar"
+            />
+            <span *ngIf="uploadingAvatar" class="uploading-text"
+              >Uploading...</span
+            >
+          </label>
+        </div>
+        <button
+          class="change-photo-btn"
+          type="button"
+          (click)="avatarInput.click()"
+          [disabled]="uploadingAvatar"
+        >
+          <i class="camera-icon" data-feather="camera"></i> Change Photo
+        </button>
+      </div>
+      <div class="profile-header-info">
+        <h2 class="profile-username">{{ user?.username || "User" }}</h2>
+        <div class="profile-email">{{ user?.email || "No email" }}</div>
+        <span class="profile-role">{{ user?.role || "Client" }}</span>
+      </div>
+    </div>
+
+    <div class="alert alert-success" *ngIf="success">
+      <i data-feather="check-circle"></i> {{ success }}
+    </div>
+
+    <div class="alert alert-error" *ngIf="error">
+      <i data-feather="alert-circle"></i> {{ error }}
+    </div>
+
+    <div class="profile-grid">
+      <div class="profile-section" *ngIf="!isEditing">
+        <div class="section-card">
+          <h2><i data-feather="user"></i> Personal Information</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Username</label>
+              <p>
+                {{
+                  user?.username
+                    ? user.username
+                    : user?.email
+                    ? user.email
+                    : "-"
+                }}
+              </p>
+            </div>
+            <div class="info-item">
+              <label>Email</label>
+              <p>{{ user?.email || "-" }}</p>
+            </div>
+            <div class="info-item">
+              <label>Full Name</label>
+              <p>
+                {{ (user?.firstName || "") + " " + (user?.lastName || "") }}
+              </p>
+            </div>
+            <div class="info-item">
+              <label>Phone</label>
+              <p>{{ user?.phone || "-" }}</p>
+            </div>
+            <div class="info-item">
+              <label>Location</label>
+              <p>{{ user?.location || "-" }}</p>
+            </div>
+            <div class="info-item">
+              <label>Member Since</label>
+              <p>{{ user.createdAt | date : "mediumDate" }}</p>
+            </div>
+          </div>
+          <button class="edit-btn" (click)="startEditing()">
+            <i data-feather="edit-2"></i>
+            Edit Profile
+          </button>
+        </div>
+
+        <div class="section-card">
+          <h2><i data-feather="settings"></i> Account Settings</h2>
+          <div class="settings-list">
+            <div class="setting-item">
+              <i data-feather="lock"></i>
+              <div class="setting-info">
+                <h3>Change Password</h3>
+                <p>Update your account password</p>
+              </div>
+              <button class="setting-btn" (click)="openChangePassword()">
+                <i data-feather="chevron-right"></i>
+              </button>
+            </div>
+            <div class="setting-item">
+              <i data-feather="bell"></i>
+              <div class="setting-info">
+                <h3>Notification Preferences</h3>
+                <p>Manage your notification settings</p>
+              </div>
+              <button class="setting-btn" (click)="openNotifications()">
+                <i data-feather="chevron-right"></i>
+              </button>
+            </div>
+            <div class="setting-item">
+              <i data-feather="shield"></i>
+              <div class="setting-info">
+                <h3>Privacy Settings</h3>
+                <p>Control your privacy preferences</p>
+              </div>
+              <button class="setting-btn" (click)="openPrivacy()">
+                <i data-feather="chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section" *ngIf="isEditing">
+        <div class="section-card">
+          <h2><i data-feather="edit-2"></i> Edit Profile</h2>
+          <form (ngSubmit)="saveProfile()" class="edit-form">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                [(ngModel)]="editedUser.username"
+                name="username"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                [(ngModel)]="editedUser.email"
+                name="email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                [(ngModel)]="editedUser.firstName"
+                name="firstName"
+              />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                [(ngModel)]="editedUser.lastName"
+                name="lastName"
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input
+                type="text"
+                id="phone"
+                [(ngModel)]="editedUser.phone"
+                name="phone"
+              />
+            </div>
+            <div class="form-group">
+              <label for="location">Location</label>
+              <input
+                type="text"
+                id="location"
+                [(ngModel)]="editedUser.location"
+                name="location"
+              />
+            </div>
+            <div class="form-actions">
+              <button
+                type="button"
+                class="cancel-btn"
+                (click)="cancelEditing()"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="save-btn" [disabled]="loading">
+                <i data-feather="save"></i>
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Loading profile...</p>
+    </div>
+  </ng-template>
+</div>

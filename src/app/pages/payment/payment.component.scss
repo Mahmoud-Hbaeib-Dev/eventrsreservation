@@ -1,0 +1,64 @@
+.payment-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+  background: #1a1f2c;
+}
+
+.payment-container {
+  background: #222e3a;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+.payment-details {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(0, 255, 184, 0.1);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 255, 184, 0.2);
+  p {
+    color: #b0b8c9;
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    &.reservation-id {
+      color: #00ffb8;
+      font-weight: 600;
+    }
+  }
+}
+
+.payment-form {
+  text-align: center;
+}
+
+.pay-button {
+  background: #00ffb8;
+  color: #1a1f2c;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background: #00cc94;
+    transform: translateY(-2px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+}

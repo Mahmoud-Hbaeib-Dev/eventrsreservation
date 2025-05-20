@@ -1,0 +1,102 @@
+.venue-verification {
+  padding: 2rem;
+  color: #f3f3f3;
+  background: transparent;
+  h2 {
+    margin-bottom: 2rem;
+    color: #e0e0e0;
+    font-weight: 700;
+  }
+  .verification-list {
+    margin-top: 2rem;
+  }
+  .verification-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #23242a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px #000a;
+  }
+  .verification-table th,
+  .verification-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    color: #f3f3f3;
+  }
+  .verification-table th {
+    background: #18191d;
+    font-weight: 600;
+    color: #90caf9;
+  }
+  .verification-table tr:last-child td {
+    border-bottom: none;
+  }
+  .status {
+    padding: 0.3em 1em;
+    border-radius: 1em;
+    font-weight: 600;
+    font-size: 0.95em;
+    display: inline-block;
+  }
+  .status.accepted {
+    background: #2e7d32;
+    color: #fff;
+  }
+  .status.rejected {
+    background: #c62828;
+    color: #fff;
+  }
+  .status.pending {
+    background: #757575;
+    color: #fff;
+  }
+  .approve-btn {
+    background: #43a047;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .approve-btn:hover {
+    background: #388e3c;
+  }
+  .reject-btn {
+    background: #757575;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .reject-btn:hover {
+    background: #616161;
+  }
+  .delete-btn {
+    background: #e53935;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .delete-btn:hover {
+    background: #b71c1c;
+  }
+  .empty-message {
+    color: #bdbdbd;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 2rem 0;
+  }
+}

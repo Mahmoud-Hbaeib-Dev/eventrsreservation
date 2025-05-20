@@ -1,0 +1,55 @@
+<div class="venue-verification">
+    <h2>Venue Verification</h2>
+    <div class="verification-list">
+        <table class="verification-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let venue of venues">
+                    <td>{{ venue.name }}</td>
+                    <td>{{ venue.description }}</td>
+                    <td>
+                        {{ (venue.address ? venue.address + ", " : "") + (venue.city || venue.location || "-") }}
+                    </td>
+                    <td>
+                        <span *ngIf="venue.isVerified" class="status accepted">Accepted</span
+            >
+            <span
+              *ngIf="!venue.isVerified && venue.rejected"
+              class="status rejected"
+              >Rejected</span
+            >
+            <span
+              *ngIf="!venue.isVerified && !venue.rejected"
+              class="status pending"
+              >Pending</span
+            >
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="approve-btn" (click)="approveVenue(venue.id)">
+                Approve
+              </button>
+              <button class="reject-btn" (click)="rejectVenue(venue.id)">
+                Reject
+              </button>
+              <button class="delete-btn" (click)="deleteVenue(venue.id)">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="venues.length === 0" class="empty-message">
+      No venues found.
+    </div>
+  </div>
+</div>

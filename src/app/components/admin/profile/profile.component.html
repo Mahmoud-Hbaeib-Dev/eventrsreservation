@@ -1,0 +1,101 @@
+<div class="profile-container">
+  <!-- Profile Card -->
+  <div class="profile-card">
+    <div class="profile-bg"></div>
+    <div class="profile-avatar">
+      <img
+        [src]="
+          profileForm.get('avatar')?.value ||
+          'https://ui-avatars.com/api/?name=' +
+            (profileForm.get('firstName')?.value || '') +
+            '+' +
+            (profileForm.get('lastName')?.value || '') +
+            '&background=00ffb8&color=222&size=128'
+        "
+        alt="Admin Avatar"
+      />
+      <label *ngIf="editMode" class="avatar-edit-btn">
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onAvatarChange($event)"
+          hidden
+        />
+        <span class="avatar-edit-icon">&#9998;</span>
+      </label>
+    </div>
+    <h2 class="profile-name">
+      {{ profileForm.get("firstName")?.value }}
+      {{ profileForm.get("lastName")?.value }}
+    </h2>
+    <div class="profile-username">
+      &#64;{{ profileForm.get("username")?.value }}
+    </div>
+    <div class="profile-bio">{{ profileForm.get("bio")?.value }}</div>
+    <button *ngIf="!editMode" class="edit-btn" (click)="enableEdit()">
+      Edit
+    </button>
+  </div>
+
+  <!-- Edit Profile Form -->
+  <div class="profile-form-card">
+    <h2>Edit Profile</h2>
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input
+            formControlName="firstName"
+            type="text"
+            [readonly]="!editMode"
+          />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input
+            formControlName="lastName"
+            type="text"
+            [readonly]="!editMode"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Username</label>
+          <input
+            formControlName="username"
+            type="text"
+            [readonly]="!editMode"
+          />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input formControlName="email" type="email" [readonly]="!editMode" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Location</label>
+          <input
+            formControlName="location"
+            type="text"
+            [readonly]="!editMode"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label>About Me / Note</label>
+          <textarea
+            formControlName="bio"
+            rows="3"
+            [readonly]="!editMode"
+          ></textarea>
+        </div>
+      </div>
+      <button *ngIf="editMode" class="save-btn" type="submit">
+        Save Profile
+      </button>
+    </form>
+  </div>
+</div>

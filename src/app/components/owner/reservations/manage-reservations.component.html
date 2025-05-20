@@ -1,0 +1,50 @@
+<div class="manage-reservations-container">
+    <h1>Manage Reservations</h1>
+    <div *ngIf="loading" class="loading">Loading reservations...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <table *ngIf="!loading && !error && reservations.length > 0" class="reservations-table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Event</th>
+                <th>Tickets</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let reservation of reservations">
+                <td>{{ reservation.userId }}</td>
+                <td>{{ reservation.eventId }}</td>
+                <td>{{ reservation.numberOfTickets }}</td>
+                <td>{{ reservation.totalPrice }}</td>
+                <td>
+                    <span class="status-badge" [ngClass]="{
+              pending: reservation.paymentStatus === 'pending',
+              accepted: reservation.paymentStatus === 'paid',
+              rejected: reservation.status === 'cancelled'
+            }">
+            <ng-container [ngSwitch]="reservation.paymentStatus">
+              <span *ngSwitchCase="'pending'">&#x23F3;</span>
+                    <span *ngSwitchCase="'paid'">&#x2714;&#xFE0F;</span>
+                    <span *ngSwitchCase="'refunded'">&#x26A0;&#xFE0F;</span>
+                    <span *ngSwitchDefault>&#x2753;</span>
+                    </ng-container>
+                    {{ reservation.paymentStatus || "pending" }}
+                    </span>
+                </td>
+                <td>
+                    <div class="action-btns">
+                        <button class="details-btn" [routerLink]="['/reservations', reservation.id]">
+              View Details
+            </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="!loading && !error && reservations.length === 0" class="no-reservations">
+        No reservations found for your venues.
+    </div>
+</div>

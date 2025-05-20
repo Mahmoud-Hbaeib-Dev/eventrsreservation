@@ -1,0 +1,121 @@
+<div class="">
+  <div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+
+  <div class="login-split">
+    <!-- Left side - Image -->
+    <div class="login-image">
+      <img src="assets/images/login1.jpeg" alt="Login" />
+    </div>
+
+    <!-- Right side - Form -->
+    <div class="login-form-container">
+      <div class="login-header">
+        <h2 class="animate-fade-in">Welcome Back</h2>
+        <p class="animate-fade-in-delay">Please sign in to continue</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div *ngIf="errorMessage" class="error-message-container">
+          {{ errorMessage }}
+        </div>
+
+        <div class="form-group animate-fade-in-delay-2">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            [ngClass]="{
+              error:
+                loginForm.get('email')?.invalid &&
+                loginForm.get('email')?.touched
+            }"
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+            "
+          >
+            Please enter a valid email address
+          </div>
+        </div>
+
+        <div class="form-group animate-fade-in-delay-3">
+          <label for="password">Password</label>
+          <div class="password-input-wrapper">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="Enter your password"
+              [ngClass]="{
+                error:
+                  loginForm.get('password')?.invalid &&
+                  loginForm.get('password')?.touched
+              }"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+              tabindex="-1"
+            >
+              <span *ngIf="showPassword">🙈</span>
+              <span *ngIf="!showPassword">👁️</span>
+            </button>
+          </div>
+          <div
+            class="error-message"
+            *ngIf="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
+          >
+            Password is required
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="login-button animate-fade-in-delay-4"
+          [disabled]="loginForm.invalid"
+        >
+          Sign In
+        </button>
+
+        <div class="social-login animate-fade-in-delay-4">
+          <p>Or continue with</p>
+          <div class="social-buttons">
+            <button
+              type="button"
+              class="social-button google"
+              (click)="loginWithGoogle()"
+            >
+              <img src="assets/icons/google.svg" alt="Google" />
+              Google
+            </button>
+            <button
+              type="button"
+              class="social-button facebook"
+              (click)="loginWithFacebook()"
+            >
+              <img src="assets/icons/facebook.svg" alt="Facebook" />
+              Facebook
+            </button>
+          </div>
+        </div>
+
+        <div class="register-link animate-fade-in-delay-5">
+          Don't have an account?
+          <a routerLink="/auth/register">Register here</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

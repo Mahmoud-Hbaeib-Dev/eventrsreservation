@@ -1,0 +1,240 @@
+<div class="my-reservations-container">
+  <div class="page-header">
+    <h1>My Reservations</h1>
+    <p class="subtitle">Manage your event bookings and reservations</p>
+  </div>
+
+  <div class="reservations-content">
+    <!-- Loading spinner -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading your reservations...</p>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="error" class="error-message">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" routerLink="/events">
+        Browse Events
+      </button>
+    </div>
+
+    <!-- Filters section (show only if there are reservations) -->
+    <div
+      class="filters-section"
+      *ngIf="!loading && !error && reservations.length > 0"
+    >
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          type="text"
+          class="search-input"
+          [(ngModel)]="searchQuery"
+          (input)="filterReservations()"
+          placeholder="Search reservations..."
+        />
+      </div>
+
+      <div class="filter-options">
+        <select [(ngModel)]="statusFilter" (change)="filterReservations()">
+          <option value="all">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+
+        <select [(ngModel)]="sortBy" (change)="filterReservations()">
+          <option value="date">Sort by Date</option>
+          <option value="event">Sort by Event</option>
+          <option value="status">Sort by Status</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Reservations grid -->
+    <div
+      class="reservations-grid"
+      *ngIf="!loading && !error && filteredReservations.length > 0"
+    >
+      <div
+        class="reservation-card"
+        *ngFor="let reservation of filteredReservations"
+      >
+        <div class="card-header">
+          <div class="event-info">
+            <h3>{{ reservation.eventName || "Unknown Event" }}</h3>
+            <span class="event-date">
+              <i class="far fa-calendar"></i>
+              {{ reservation.eventDate | date : "mediumDate" }}
+            </span>
+          </div>
+          <div
+            class="status-badge"
+            [ngClass]="reservation.status.toLowerCase()"
+          >
+            {{ reservation.status }}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="reservation-details">
+            <div class="detail-item">
+              <i class="fas fa-ticket-alt"></i>
+              <span>Tickets: {{ reservation.numberOfTickets }}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-money-bill-wave"></i>
+              <span>Total: ${{ reservation.totalPrice }}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-credit-card"></i>
+              <span>Payment: {{ reservation.paymentStatus }}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-clock"></i>
+              <span
+                >Reserved: {{ reservation.createdAt | date : "medium" }}</span
+              >
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button
+              class="details-btn"
+              (click)="viewReservationDetails(reservation)"
+            >
+              <i class="fas fa-eye"></i> View Event
+            </button>
+            <button
+              *ngIf="reservation.status === 'pending'"
+              class="cancel-btn"
+              (click)="cancelReservation(reservation)"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No reservations message -->
+    <div
+      *ngIf="!loading && !error && filteredReservations.length === 0"
+      class="no-reservations"
+    >
+      <i class="fas fa-calendar-times"></i>
+      <h2>No Reservations Found</h2>
+      <p>
+        You haven't made any reservations yet or no reservations match your
+        filters.
+      </p>
+      <div class="action-buttons">
+        <a routerLink="/events" class="btn-primary">
+          <i class="fas fa-calendar-plus"></i> Browse Events
+        </a>
+        <button
+          class="btn-secondary"
+          (click)="refreshReservations()"
+          style="margin-left: 10px"
+        >
+          <i class="fas fa-sync"></i> Refresh Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="custom-modal-backdrop" *ngIf="showConfirmModal">
+    <div class="custom-modal">
+      <div class="modal-content">
+        <h3>Cancel Reservation</h3>
+        <p>Are you sure you want to cancel this reservation?</p>
+        <div class="modal-actions">
+          <button class="modal-btn danger" (click)="confirmCancel()">
+            Yes, Cancel
+          </button>
+          <button class="modal-btn" (click)="closeConfirmModal()">
+            No, Keep
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reservation Details Modal -->
+  <div class="custom-modal-backdrop" *ngIf="showDetailsModal">
+    <div class="custom-modal better-modal">
+      <button class="modal-close-btn" (click)="closeDetailsModal()">
+        &times;
+      </button>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="event-title">{{ selectedReservation?.eventName }}</h2>
+          <div class="event-date">
+            <i class="far fa-calendar"></i>
+            {{ selectedReservation?.eventDate | date : "fullDate" }}
+          </div>
+        </div>
+        <div class="modal-section">
+          <label class="tickets-label"><strong>Tickets:</strong></label>
+          <div class="tickets-input-group">
+            <button
+              class="stepper-btn"
+              (click)="changeTickets(-1)"
+              [disabled]="editedTickets <= 1"
+            >
+              -
+            </button>
+            <input
+              id="edit-tickets"
+              type="number"
+              min="1"
+              [value]="editedTickets"
+              (input)="onTicketsChange($event)"
+              class="tickets-input"
+            />
+            <button class="stepper-btn" (click)="changeTickets(1)">+</button>
+          </div>
+        </div>
+        <div class="modal-section">
+          <span class="payment-label"><strong>Payment:</strong></span>
+          <span class="payment-status">{{
+            selectedReservation?.paymentStatus
+          }}</span>
+        </div>
+        <div class="modal-section">
+          <span class="status-label"><strong>Status:</strong></span>
+          <span class="status-value">{{ selectedReservation?.status }}</span>
+        </div>
+        <div *ngIf="isConfirmed" class="success-message animated">
+          <i class="fas fa-check-circle"></i> Reservation confirmed! You can now
+          proceed to payment.
+        </div>
+        <div class="modal-actions">
+          <button
+            class="modal-btn"
+            [disabled]="!isConfirmed"
+            (click)="goToPayment(selectedReservation!)"
+          >
+            Go to Payment
+          </button>
+          <button
+            class="modal-btn"
+            [disabled]="isConfirmed"
+            (click)="confirmReservation(selectedReservation!)"
+          >
+            Confirm
+          </button>
+          <button
+            class="modal-btn danger"
+            (click)="cancelReservation(selectedReservation!)"
+            [disabled]="!selectedReservation"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

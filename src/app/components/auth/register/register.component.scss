@@ -1,0 +1,376 @@
+// Floating glowing shapes
+.floating-shapes {
+  position: absolute;
+  width: 100vw;
+  pointer-events: none;
+  z-index: 0;
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.18;
+    &.one {
+      width: 350px;
+      height: 350px;
+      left: -100px;
+      top: 10vh;
+      background: radial-gradient(circle, #00ffb8 0%, #00b8ff 100%);
+      animation: float 8s ease-in-out infinite;
+    }
+    &.two {
+      width: 220px;
+      height: 220px;
+      right: -80px;
+      top: 60vh;
+      background: radial-gradient(circle, #8e54e9 0%, #4776e6 100%);
+      animation: float 10s ease-in-out infinite 2s;
+    }
+    &.three {
+      width: 140px;
+      height: 140px;
+      left: 60vw;
+      top: 80vh;
+      background: radial-gradient(circle, #ff5e62 0%, #ff9966 100%);
+      animation: float 12s ease-in-out infinite 4s;
+    }
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+.login-split {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  background: rgba(24, 28, 40, 0.85);
+  border-radius: 2rem;
+  box-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.45), 0 1.5px 0 0 #00ffb8;
+  border: 1.5px solid rgba(0, 255, 184, 0.12);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+
+.login-image {
+  flex: 1;
+  background: #1a2332;
+  position: relative;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+  }
+}
+
+.login-form-container {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2.2rem;
+  h2 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, #00ffb8 0%, #00b8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 24px #00ffb833, 0 1px 2px #000a;
+  }
+  p {
+    color: #b0b8c9;
+    font-size: 1.08rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.login-form {
+  .form-group {
+    margin-bottom: 1.5rem;
+    label {
+      color: #b0b8c9;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      display: block;
+      letter-spacing: 0.5px;
+    }
+    input,
+    select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 0.8rem;
+      border: 1.5px solid #222b3a;
+      background: rgba(30, 36, 50, 0.95);
+      color: #e6f6ff;
+      font-size: 1.08rem;
+      transition: border 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 12px 0 rgba(0, 255, 184, 0.04);
+      &:focus {
+        border: 1.5px solid #00b8ff;
+        box-shadow: 0 0 0 2px #00b8ff44;
+        outline: none;
+      }
+      &.error {
+        border: 1.5px solid #ff5e62;
+        box-shadow: 0 0 0 2px #ff5e6244;
+      }
+    }
+  }
+  .error-message {
+    color: #ff5e62;
+    font-size: 0.92rem;
+    margin-top: 0.3rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    &::before {
+      content: "⚠";
+      font-size: 1rem;
+    }
+  }
+}
+
+.login-button {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 0.2rem;
+  background: linear-gradient(90deg, #00ffb8 0%, #00b8ff 100%);
+  color: #1a2332;
+  border: none;
+  border-radius: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 16px 0 #00ffb822;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+  &:hover {
+    background: linear-gradient(90deg, #00b8ff 0%, #00ffb8 100%);
+    box-shadow: 0 4px 32px 0 #00b8ff44;
+    transform: translateY(-2px) scale(1.03);
+  }
+  &:disabled {
+    background: #222b3a;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.7;
+  }
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 1.7rem;
+  color: #b0b8c9;
+  font-size: 1.03rem;
+  a {
+    color: #00b8ff;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+    &::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #00ffb8 0%, #00b8ff 100%);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transition: transform 0.2s;
+    }
+    &:hover::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    border-radius: 1.2rem;
+  }
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 2.5rem;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #b0b8c9;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.toggle-password:focus {
+  outline: none;
+}
+
+.social-login {
+  margin-top: 2rem;
+  text-align: center;
+  p {
+    color: #b0b8c9;
+    margin-bottom: 1rem;
+    position: relative;
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: #222b3a;
+    }
+    &::before {
+      left: 0;
+    }
+    &::after {
+      right: 0;
+    }
+  }
+  .social-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    .social-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem;
+      border-radius: 0.8rem;
+      border: 1.5px solid #222b3a;
+      background: rgba(30, 36, 50, 0.95);
+      color: #e6f6ff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      img {
+        width: 20px;
+        height: 20px;
+      }
+      &.google:hover {
+        background: #db4437;
+        border-color: #db4437;
+      }
+      &.facebook:hover {
+        background: #4267b2;
+        border-color: #4267b2;
+      }
+    }
+  }
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #00b8ff;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  margin-left: 0.3rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.link-button::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #00ffb8 0%, #00b8ff 100%);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.link-button:hover::after {
+  transform: scaleX(1);
+}
+
+// Style the select dropdown to match your dark theme
+.login-form select {
+  width: 100%;
+  padding: 1rem 1.5rem 1rem 1rem;
+  border-radius: 1.2rem;
+  border: 1.5px solid #222b3a;
+  background: rgba(30, 36, 50, 0.98);
+  color: #e6f6ff;
+  font-size: 1.08rem;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px 0 rgba(0, 255, 184, 0.08);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='cyan' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='12' r='12' fill='black' opacity='0.2'/><path d='M7 10l5 5 5-5' stroke='cyan' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-size: 1.5rem;
+}
+
+.login-form select:focus {
+  border: 1.5px solid #00b8ff;
+  box-shadow: 0 0 0 2px #00b8ff44;
+  outline: none;
+}
+
+.login-form select.error {
+  border: 1.5px solid #ff5e62;
+  box-shadow: 0 0 0 2px #ff5e6244;
+}
+
+// Style the dropdown list (for Webkit browsers)
+.login-form select option {
+  background: #23293a;
+  color: #e6f6ff;
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+
+// For Firefox
+.login-form select:-moz-focusring {
+  color: #e6f6ff;
+  text-shadow: 0 0 0 #e6f6ff;
+}

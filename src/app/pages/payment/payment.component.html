@@ -1,0 +1,16 @@
+<div class="payment-page">
+  <div class="payment-container">
+    <h2>Complete Your Payment</h2>
+    <div class="payment-details">
+      <p class="reservation-id">Reservation #{{ reservationId }}</p>
+      <p class="ticket-info">Number of tickets: {{ tickets }}</p>
+    </div>
+
+    <div class="payment-form">
+      <!-- Payment form would go here - for now just a button -->
+      <button class="pay-button" (click)="processPayment()">
+        Complete Payment
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="event-verification">
+  <h2>Event Verification</h2>
+  <div class="verification-list">
+    <table class="verification-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Venue</th>
+          <th>Organizer</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of events">
+          <td>{{ event.title }}</td>
+          <td>{{ event.description }}</td>
+          <td>{{ event.venueName || "-" }}</td>
+          <td>{{ event.ownerId || "-" }}</td>
+          <td>{{ event.date }}</td>
+          <td>
+            <span
+              class="status-badge"
+              [ngClass]="{
+                pending: event.status === 'pending',
+                accepted: event.status === 'accepted',
+                rejected: event.status === 'rejected'
+              }"
+            >
+              <ng-container [ngSwitch]="event.status">
+                <span *ngSwitchCase="'pending'">&#x23F3;</span>
+                <!-- Hourglass -->
+                <span *ngSwitchCase="'accepted'">&#x2714;&#xFE0F;</span>
+                <!-- Checkmark -->
+                <span *ngSwitchCase="'rejected'">&#x26A0;&#xFE0F;</span>
+                <!-- Warning -->
+                <span *ngSwitchDefault>&#x2753;</span>
+                <!-- Question -->
+              </ng-container>
+              {{ event.status || "pending" }}
+            </span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="approve-btn" (click)="approveEvent(event.id)">
+                Approve
+              </button>
+              <button class="reject-btn" (click)="rejectEvent(event.id)">
+                Reject
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="events.length === 0" class="empty-message">
+      No events found.
+    </div>
+  </div>
+  <div
+    class="modal-backdrop"
+    *ngIf="showRejectModal"
+    (click)="closeRejectModal()"
+  ></div>
+  <div class="reject-modal" *ngIf="showRejectModal">
+    <form
+      class="reject-form"
+      (ngSubmit)="confirmReject()"
+      (click)="$event.stopPropagation()"
+    >
+      <h3>Reject Event</h3>
+      <label for="rejectComment">Reason for rejection:</label>
+      <textarea
+        id="rejectComment"
+        [(ngModel)]="rejectComment"
+        name="rejectComment"
+        rows="3"
+        placeholder="Enter reason..."
+        required
+      ></textarea>
+      <div class="modal-actions">
+        <button type="submit" class="save-btn">Save</button>
+        <button type="button" class="cancel-btn" (click)="closeRejectModal()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

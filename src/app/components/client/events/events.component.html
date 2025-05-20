@@ -1,0 +1,79 @@
+<div class="events-container">
+    <!-- Floating shapes for background effect -->
+    <div class="floating-shapes">
+        <div class="shape one"></div>
+        <div class="shape two"></div>
+        <div class="shape three"></div>
+    </div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <h1>Browse Events</h1>
+        <p>Discover and book exciting events in your area</p>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="search-filter-section">
+        <div class="search-box">
+            <i data-feather="search"></i>
+            <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch($event)" placeholder="Search events..." />
+        </div>
+        <div class="category-filters">
+            <button *ngFor="let category of ['all', 'music', 'sports', 'arts', 'food']" [class.active]="selectedCategory === category" (click)="onCategoryChange(category)">
+        {{ category | titlecase }}
+      </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Loading events...</p>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state" *ngIf="error">
+        <i data-feather="alert-circle"></i>
+        <p>{{ error }}</p>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="events-grid" *ngIf="!loading && !error">
+        <div class="event-card" *ngFor="let event of filteredEvents">
+            <div class="event-image">
+                <img [src]="event.image || 'assets/images/default-event.jpg'" [alt]="event.title" />
+                <span class="status-badge" [class]="getStatusClass(event.status || 'upcoming')">
+          {{ event.status || "upcoming" | titlecase }}
+        </span>
+            </div>
+            <div class="event-details">
+                <h3>{{ event.title }}</h3>
+                <p class="event-date">
+                    <i data-feather="calendar"></i> {{ event.date | date : "mediumDate" }}
+                </p>
+                <p class="event-time">
+                    <i data-feather="clock"></i> {{ event.startTime }} - {{ event.endTime }}
+                </p>
+                <p class="event-venue">
+                    <i data-feather="map-pin"></i> Venue #{{ event.venueId }}
+                </p>
+                <p class="event-description">{{ event.description }}</p>
+                <div class="event-footer">
+                    <span class="price">${{ event.price }}</span>
+                    <button class="book-btn" [routerLink]="['/client/events', event.id]">
+            Book Now
+          </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!loading && !error && filteredEvents.length === 0">
+        <i data-feather="calendar"></i>
+        <p>No events found matching your criteria</p>
+        <button class="clear-filters-btn" (click)="clearFilters()">
+      Clear Filters
+    </button>
+    </div>
+</div>

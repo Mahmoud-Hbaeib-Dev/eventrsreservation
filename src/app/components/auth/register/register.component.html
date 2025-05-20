@@ -1,0 +1,117 @@
+<div class="">
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="login-split">
+        <!-- Left side - Form -->
+        <div class="login-form-container">
+            <div class="login-header">
+                <h2 class="animate-fade-in">Create Account</h2>
+                <p class="animate-fade-in-delay">Please fill in the form to register</p>
+            </div>
+
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-form">
+                <div class="form-group animate-fade-in-delay-2">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" formControlName="username" placeholder="Enter your username" [ngClass]="{
+              error:
+                registerForm.get('username')?.invalid &&
+                registerForm.get('username')?.touched
+            }" />
+                    <div class="error-message" *ngIf="
+              registerForm.get('username')?.invalid &&
+              registerForm.get('username')?.touched
+            ">
+                        Username is required
+                    </div>
+                </div>
+                <div class="form-group animate-fade-in-delay-2">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" formControlName="email" placeholder="Enter your email" [ngClass]="{
+              error:
+                registerForm.get('email')?.invalid &&
+                registerForm.get('email')?.touched
+            }" />
+                    <div class="error-message" *ngIf="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            ">
+                        Please enter a valid email address
+                    </div>
+                </div>
+                <div class="form-group animate-fade-in-delay-3">
+                    <label for="password">Password</label>
+                    <div class="password-input-wrapper">
+                        <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="Enter your password" [ngClass]="{
+                error:
+                  registerForm.get('password')?.invalid &&
+                  registerForm.get('password')?.touched
+              }" />
+                        <button type="button" class="toggle-password" (click)="togglePasswordVisibility()" tabindex="-1">
+              <span *ngIf="showPassword">🙈</span>
+              <span *ngIf="!showPassword">👁️</span>
+            </button>
+                    </div>
+                    <div class="error-message" *ngIf="
+              registerForm.get('password')?.invalid &&
+              registerForm.get('password')?.touched
+            ">
+                        Password is required
+                    </div>
+                </div>
+                <div class="form-group animate-fade-in-delay-3">
+                    <label for="role">Role</label>
+                    <select id="role" formControlName="role" [ngClass]="{
+              error:
+                registerForm.get('role')?.invalid &&
+                registerForm.get('role')?.touched
+            }">
+            <option value="">Select a role</option>
+            <option value="client">Client</option>
+            <option value="owner">Venue Owner</option>
+          </select>
+                    <div class="error-message" *ngIf="
+              registerForm.get('role')?.invalid &&
+              registerForm.get('role')?.touched
+            ">
+                        Please select a role
+                    </div>
+                </div>
+
+                <div class="error-message" *ngIf="errorMessage">
+                    {{ errorMessage }}
+                </div>
+
+                <button type="submit" class="login-button animate-fade-in-delay-4" [disabled]="registerForm.invalid">
+          Register
+        </button>
+
+                <div class="social-login animate-fade-in-delay-4">
+                    <p>Or continue with</p>
+                    <div class="social-buttons">
+                        <button type="button" class="social-button google">
+              <img src="assets/icons/google.svg" alt="Google" />
+              Google
+            </button>
+                        <button type="button" class="social-button facebook">
+              <img src="assets/icons/facebook.svg" alt="Facebook" />
+              Facebook
+            </button>
+                    </div>
+                </div>
+
+                <div class="register-link animate-fade-in-delay-5">
+                    Already have an account?
+                    <a routerLink="/auth/login">Login here</a>
+                </div>
+            </form>
+        </div>
+        <!-- Right side - Image -->
+        <div class="login-image">
+            <img src="assets/images/login1.jpeg" alt="Register" />
+        </div>
+    </div>
+</div>

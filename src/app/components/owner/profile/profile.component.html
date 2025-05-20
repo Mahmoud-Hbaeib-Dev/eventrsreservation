@@ -1,0 +1,295 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1>Owner Profile</h1>
+  </div>
+
+  <div class="profile-content">
+    <!-- Owner Information -->
+    <div class="profile-section owner-section">
+      <div
+        class="edit-owner-icon"
+        (click)="toggleEditOwner()"
+        *ngIf="!editOwnerMode"
+        title="Edit Profile"
+      >
+        <i class="fas fa-pen"></i>
+      </div>
+      <div class="owner-flex" *ngIf="!editOwnerMode">
+        <div class="owner-avatar-wrap" *ngIf="owner?.avatar">
+          <img [src]="owner.avatar" alt="Owner avatar" class="owner-avatar" />
+        </div>
+        <div class="owner-details">
+          <h2>Personal Information</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Name:</label>
+              <span
+                >{{ owner?.firstName || "" }}
+                {{ owner?.lastName || owner?.name || "—" }}</span
+              >
+            </div>
+            <div class="info-item">
+              <label>Email:</label>
+              <span class="owner-email">{{ owner?.email || "—" }}</span>
+            </div>
+            <div class="info-item">
+              <label>Phone:</label>
+              <span>{{ owner?.phone || "—" }}</span>
+            </div>
+            <div class="info-item">
+              <label>Role:</label>
+              <span class="owner-role">{{ owner?.role || "—" }}</span>
+            </div>
+            <div class="info-item" *ngIf="owner?.gender">
+              <label>Gender:</label>
+              <span>{{ owner.gender }}</span>
+            </div>
+            <div class="info-item" *ngIf="owner?.location">
+              <label>Location:</label>
+              <span>{{ owner.location }}</span>
+            </div>
+            <div class="info-item" *ngIf="owner?.bio">
+              <label>Bio:</label>
+              <span>{{ owner.bio }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form
+        class="owner-edit-form"
+        *ngIf="editOwnerMode"
+        [formGroup]="ownerForm"
+        (ngSubmit)="saveOwner()"
+      >
+        <div class="owner-flex">
+          <div class="owner-avatar-wrap">
+            <img
+              [src]="
+                ownerForm.value.avatar ||
+                'https://ui-avatars.com/api/?name=' +
+                  (ownerForm.value.firstName || '') +
+                  '+' +
+                  (ownerForm.value.lastName || '') +
+                  '&background=00ffb8&color=222&size=128'
+              "
+              alt="Owner avatar"
+              class="owner-avatar"
+            />
+            <label class="avatar-upload-btn">
+              <input
+                type="file"
+                accept="image/*"
+                (change)="onOwnerAvatarSelected($event)"
+                hidden
+              />
+              <span class="avatar-edit-icon"
+                ><i class="fas fa-camera"></i
+              ></span>
+            </label>
+            <div *ngIf="uploadingImage" class="uploading">Uploading...</div>
+            <div *ngIf="uploadError" class="error">{{ uploadError }}</div>
+          </div>
+          <div class="owner-details">
+            <h2>Edit Personal Information</h2>
+            <div class="info-grid">
+              <div class="info-item">
+                <label>First Name:</label>
+                <input formControlName="firstName" type="text" />
+              </div>
+              <div class="info-item">
+                <label>Last Name:</label>
+                <input formControlName="lastName" type="text" />
+              </div>
+              <div class="info-item">
+                <label>Email:</label>
+                <input formControlName="email" type="email" />
+              </div>
+              <div class="info-item">
+                <label>Phone:</label>
+                <input formControlName="phone" type="text" />
+              </div>
+              <div class="info-item">
+                <label>Gender:</label>
+                <select formControlName="gender">
+                  <option value="">Select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="info-item">
+                <label>Location:</label>
+                <input formControlName="location" type="text" />
+              </div>
+              <div class="info-item">
+                <label>Bio:</label>
+                <textarea formControlName="bio" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="save-btn">Save</button>
+              <button
+                type="button"
+                (click)="cancelEditOwner()"
+                class="cancel-btn"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Venue Information -->
+    <div class="profile-section">
+      <div class="section-header">
+        <h2>Venue Information</h2>
+        <button *ngIf="!editMode" (click)="toggleEdit()" class="edit-btn">
+          {{ venue ? "Edit Venue" : "Add Venue" }}
+        </button>
+      </div>
+
+      <div *ngIf="loading" class="loading">Loading...</div>
+      <div *ngIf="error" class="error">{{ error }}</div>
+
+      <form
+        *ngIf="editMode"
+        [formGroup]="venueForm"
+        (ngSubmit)="saveVenue()"
+        class="venue-form"
+      >
+        <div class="form-group">
+          <label for="name">Venue Name</label>
+          <input type="text" id="name" formControlName="name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="type">Venue Type</label>
+          <input type="text" id="type" formControlName="type" required />
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" formControlName="address" required />
+        </div>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" formControlName="city" required />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="amenities">Amenities (comma-separated)</label>
+          <input
+            type="text"
+            id="amenities"
+            formControlName="amenities"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="capacity">Capacity</label>
+          <input
+            type="number"
+            id="capacity"
+            formControlName="capacity"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="pricePerHour">Price per Hour</label>
+          <input
+            type="number"
+            id="pricePerHour"
+            formControlName="pricePerHour"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="images">Images</label>
+          <input
+            type="file"
+            id="images"
+            (change)="onImageSelected($event)"
+            accept="image/*"
+          />
+          <div *ngIf="uploadingImage" class="uploading">Uploading...</div>
+          <div *ngIf="uploadError" class="error">{{ uploadError }}</div>
+        </div>
+
+        <div class="image-preview" *ngIf="imagesPreview.length > 0">
+          <div *ngFor="let image of imagesPreview" class="preview-item">
+            <img [src]="image" alt="Venue preview" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="save-btn">Save Venue</button>
+          <button type="button" (click)="cancelEdit()" class="cancel-btn">
+            Cancel
+          </button>
+        </div>
+      </form>
+
+      <div *ngIf="!editMode && venue" class="venue-info">
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Name:</label>
+            <span>{{ venue.name }}</span>
+          </div>
+          <div class="info-item">
+            <label>Type:</label>
+            <span>{{ venue.type }}</span>
+          </div>
+          <div class="info-item">
+            <label>Address:</label>
+            <span>{{ venue.address }}</span>
+          </div>
+          <div class="info-item">
+            <label>City:</label>
+            <span>{{ venue.city }}</span>
+          </div>
+          <div class="info-item">
+            <label>Description:</label>
+            <span>{{ venue.description }}</span>
+          </div>
+          <div class="info-item">
+            <label>Amenities:</label>
+            <span>{{ venue.amenities?.join(", ") }}</span>
+          </div>
+          <div class="info-item">
+            <label>Capacity:</label>
+            <span>{{ venue.capacity }}</span>
+          </div>
+          <div class="info-item">
+            <label>Price per Hour:</label>
+            <span>${{ venue.pricePerHour }}</span>
+          </div>
+        </div>
+
+        <div class="venue-images" *ngIf="venue.images?.length">
+          <h3>Venue Images</h3>
+          <div class="image-grid">
+            <div *ngFor="let image of venue.images" class="image-item">
+              <img [src]="image" alt="Venue image" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
