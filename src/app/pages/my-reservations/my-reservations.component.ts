@@ -187,7 +187,19 @@ export class MyReservationsComponent implements OnInit {
 
   confirmReservation(reservation: Reservation): void {
     if (reservation) {
-      reservation.numberOfTickets = this.editedTickets;
+      // Update the reservation in the list
+      const index = this.reservations.findIndex((r) => r.id === reservation.id);
+      if (index !== -1) {
+        this.reservations[index] = {
+          ...reservation,
+          numberOfTickets: this.editedTickets,
+          totalPrice:
+            (reservation.totalPrice / reservation.numberOfTickets) *
+            this.editedTickets,
+        };
+        this.filterReservations();
+      }
+
       this.isConfirmed = true;
       this.notificationService.success(
         'Reservation confirmed! You can now proceed to payment.'
@@ -196,14 +208,59 @@ export class MyReservationsComponent implements OnInit {
   }
 
   goToPayment(reservation: Reservation): void {
-    if (reservation && this.isConfirmed) {
-      this.router.navigate(['/payment'], {
+    if (!reservation) {
+      this.notificationService.error('No reservation selected');
+      return;
+    }
+
+    if (!this.isConfirmed) {
+      this.notificationService.warning('Please confirm your reservation first');
+      return;
+    }
+
+    if (reservation.status === 'cancelled') {
+      this.notificationService.error(
+        'Cannot process payment for a cancelled reservation'
+      );
+      return;
+    }
+
+    if (reservation.paymentStatus === 'paid') {
+      this.notificationService.warning(
+        'This reservation has already been paid'
+      );
+      return;
+    }
+
+    // Calculate the new total price based on edited tickets
+    const pricePerTicket = reservation.totalPrice / reservation.numberOfTickets;
+    const newTotalPrice = pricePerTicket * this.editedTickets;
+
+    console.log('Navigating to payment with params:', {
+      reservationId: reservation.id,
+      tickets: this.editedTickets,
+      totalAmount: newTotalPrice,
+      eventName: reservation.eventName,
+      eventDate: reservation.eventDate,
+      pricePerTicket: pricePerTicket,
+    });
+
+    this.router
+      .navigate(['/payment'], {
         queryParams: {
           reservationId: reservation.id,
           tickets: this.editedTickets,
+          totalAmount: newTotalPrice,
+          eventName: reservation.eventName,
+          eventDate: reservation.eventDate,
+          pricePerTicket: pricePerTicket,
         },
+      })
+      .then((success) => {
+        if (!success) {
+          this.notificationService.error('Failed to navigate to payment page');
+        }
       });
-    }
   }
 
   cancelReservation(reservation: Reservation): void {

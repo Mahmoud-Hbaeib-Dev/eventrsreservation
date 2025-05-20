@@ -1,111 +1,82 @@
 <div class="events-container">
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="hero-bg-glow"></div>
-    <div class="hero-content animate-fade-in">
-      <h1>
-        <span class="gradient-text">Discover Amazing Events</span>
-      </h1>
-      <p class="hero-subtitle">
-        Find and book tickets for the best events in your area
-      </p>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-content animate-fade-in">
+            <h1>
+                <span class="gradient-text">Discover Amazing Events</span>
+            </h1>
+            <p class="hero-subtitle">
+                Find and book tickets for the best events in your area
+            </p>
+        </div>
+    </section>
 
-  <!-- Filter Bar -->
-  <section class="filter-bar">
-    <div class="search-wrapper">
-      <i class="fas fa-search search-icon"></i>
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Search events..."
-        [(ngModel)]="searchText"
-        (input)="onSearch()"
-      />
-    </div>
-    <div class="categories">
-      <button
-        *ngFor="let category of categories"
-        [class.active]="selectedCategory === category.id.toString()"
-        (click)="filterByCategory(category.id.toString())"
-        class="category-btn"
-      >
+    <!-- Filter Bar -->
+    <section class="filter-bar">
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Search events..." [(ngModel)]="searchText" (input)="onSearch()" />
+        </div>
+        <div class="categories">
+            <button *ngFor="let category of categories" [class.active]="selectedCategory === category.id.toString()" (click)="filterByCategory(category.id.toString())" class="category-btn">
         {{ category.name }}
       </button>
-      <button
-        [class.active]="selectedCategory === 'All'"
-        (click)="filterByCategory('All')"
-        class="category-btn"
-      >
+            <button [class.active]="selectedCategory === 'All'" (click)="filterByCategory('All')" class="category-btn">
         All
       </button>
-    </div>
-    <button class="calendar-btn" (click)="toggleCalendar()">
+        </div>
+        <button class="calendar-btn" (click)="toggleCalendar()">
       <i class="fas fa-calendar-alt"></i>
     </button>
-    <input
-      *ngIf="showCalendar"
-      type="date"
-      class="date-picker"
-      [(ngModel)]="selectedDate"
-      (change)="onDateChange()"
-    />
-  </section>
+        <input *ngIf="showCalendar" type="date" class="date-picker" [(ngModel)]="selectedDate" (change)="onDateChange()" />
+    </section>
 
-  <!-- Events Grid -->
-  <section class="events-grid">
-    <div *ngFor="let event of filteredEvents" class="event-card">
-      <div class="event-image">
-        <img
-          [src]="event.image || 'assets/images/default-event.jpg'"
-          [alt]="event.title"
-        />
-        <div class="event-category">{{ event.category }}</div>
-        <div *ngIf="isEventPassed(event)" class="event-passed">PAST EVENT</div>
-      </div>
-      <div class="event-content">
-        <h3>{{ event.title }}</h3>
-        <p class="event-description">{{ event.description }}</p>
-        <div class="event-details">
-          <div class="detail">
-            <i class="fas fa-calendar"></i>
-            <span [class.passed-date]="isEventPassed(event)">{{
+    <!-- Events Grid -->
+    <section class="events-grid">
+        <div *ngFor="let event of filteredEvents" class="event-card">
+            <div class="event-image">
+                <img [src]="event.image || 'assets/images/default-event.jpg'" [alt]="event.title" />
+                <div class="event-category">{{ event.category }}</div>
+                <div *ngIf="isEventPassed(event)" class="event-passed">PAST EVENT</div>
+            </div>
+            <div class="event-content">
+                <h3>{{ event.title }}</h3>
+                <p class="event-description">{{ event.description }}</p>
+                <div class="event-details">
+                    <div class="detail">
+                        <i class="fas fa-calendar"></i>
+                        <span [class.passed-date]="isEventPassed(event)">{{
               event.date | date : "mediumDate"
             }}</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-clock"></i>
-            <span>{{ event.startTime }} - {{ event.endTime }}</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-ticket-alt"></i>
-            <span>${{ event.price }}</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-users"></i>
-            <span>{{ event.availableSpots }} spots left</span>
-          </div>
-        </div>
-        <div class="event-footer">
-          <button
-            class="reserve-btn"
-            (click)="reserveEvent(event)"
-            [disabled]="isEventPassed(event)"
-            [class.passed]="isEventPassed(event)"
-          >
+                    </div>
+                    <div class="detail">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ event.startTime }} - {{ event.endTime }}</span>
+                    </div>
+                    <div class="detail">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>${{ event.price }}</span>
+                    </div>
+                    <div class="detail">
+                        <i class="fas fa-users"></i>
+                        <span>{{ event.availableSpots }} spots left</span>
+                    </div>
+                </div>
+                <div class="event-footer">
+                    <button class="reserve-btn" (click)="reserveEvent(event)" [disabled]="isEventPassed(event)" [class.passed]="isEventPassed(event)">
             {{ isEventPassed(event) ? "Event Ended" : "Reserve Now" }}
           </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- No Events Message -->
-  <div *ngIf="filteredEvents.length === 0" class="no-events">
-    <h3>No events found</h3>
-    <p>
-      Try selecting a different category or check back later for new events.
-    </p>
-  </div>
+    <!-- No Events Message -->
+    <div *ngIf="filteredEvents.length === 0" class="no-events">
+        <h3>No events found</h3>
+        <p>
+            Try selecting a different category or check back later for new events.
+        </p>
+    </div>
 </div>

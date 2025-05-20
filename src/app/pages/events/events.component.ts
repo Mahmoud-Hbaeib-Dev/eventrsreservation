@@ -109,6 +109,9 @@ export class EventsComponent implements OnInit {
 
   applyFilters(): void {
     this._filteredEvents = this.events.filter((event) => {
+      // Only show accepted events
+      const isAccepted = event.status === 'accepted';
+
       const matchesCategory =
         this.selectedCategory === 'All' ||
         event.categoryId === this.selectedCategory;
@@ -119,7 +122,7 @@ export class EventsComponent implements OnInit {
       const matchesDate =
         !this.selectedDate ||
         event.date.toISOString().split('T')[0] === this.selectedDate;
-      return matchesCategory && matchesSearch && matchesDate;
+      return isAccepted && matchesCategory && matchesSearch && matchesDate;
     });
   }
 

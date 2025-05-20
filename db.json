@@ -301,6 +301,25 @@
       "updatedAt": "2025-05-16T18:04:38.294Z",
       "status": "rejected",
       "rejectionComment": "bad"
+    },
+    {
+      "id": "3c17",
+      "title": "new1",
+      "description": "new1new1new1new1",
+      "date": "2026-05-20",
+      "startTime": "00:00",
+      "endTime": "03:00",
+      "price": 10,
+      "capacity": 500,
+      "categoryId": "2",
+      "venueId": "c3e0",
+      "image": "https://r2.fivemanage.com/image/Tq4oVr1BDDH0.jpeg",
+      "availableSpots": 500,
+      "isVerified": false,
+      "status": "accepted",
+      "rejectionComment": "",
+      "createdAt": "2025-05-20T13:49:47.705Z",
+      "updatedAt": "2025-05-20T13:49:47.705Z"
     }
   ],
   "reservations": [
@@ -374,8 +393,8 @@
       "numberOfGuests": 1,
       "numberOfTickets": 1,
       "totalPrice": 20,
-      "status": "accepted",
-      "paymentStatus": "pending",
+      "status": "confirmed",
+      "paymentStatus": "paid",
       "createdAt": "2025-05-17T19:38:22.472Z",
       "updatedAt": "2025-05-17T19:38:22.472Z"
     },
@@ -420,6 +439,20 @@
       "paymentStatus": "pending",
       "createdAt": "2025-05-17T20:37:04.955Z",
       "updatedAt": "2025-05-17T20:37:04.955Z"
+    },
+    {
+      "id": "3db7",
+      "eventId": "3c17",
+      "userId": "LeaJredxOfVIy6iuVSgPb2Zr0xi2",
+      "eventName": "new1",
+      "eventDate": "2026-05-20",
+      "numberOfGuests": 1,
+      "numberOfTickets": 1,
+      "totalPrice": 10,
+      "status": "confirmed",
+      "paymentStatus": "paid",
+      "createdAt": "2025-05-20T14:00:38.388Z",
+      "updatedAt": "2025-05-20T14:00:38.388Z"
     }
   ]
 }

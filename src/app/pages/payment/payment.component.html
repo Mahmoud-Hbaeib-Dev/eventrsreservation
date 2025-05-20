@@ -1,15 +1,149 @@
 <div class="payment-page">
   <div class="payment-container">
-    <h2>Complete Your Payment</h2>
-    <div class="payment-details">
-      <p class="reservation-id">Reservation #{{ reservationId }}</p>
-      <p class="ticket-info">Number of tickets: {{ tickets }}</p>
+    <a class="back-button" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back to Reservations
+    </a>
+
+    <div class="payment-header">
+      <h2>Complete Your Payment</h2>
+      <div class="amount-display">
+        <span class="amount-label">Total Amount:</span>
+        <span class="amount-value">${{ totalAmount }}</span>
+      </div>
     </div>
 
-    <div class="payment-form">
-      <!-- Payment form would go here - for now just a button -->
-      <button class="pay-button" (click)="processPayment()">
-        Complete Payment
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <div class="summary-item">
+        <span>Event:</span>
+        <span>{{ eventName }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Date:</span>
+        <span>{{ eventDate | date : "mediumDate" }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Number of Tickets:</span>
+        <span>{{ tickets }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Price per Ticket:</span>
+        <span>${{ pricePerTicket }}</span>
+      </div>
+      <div class="summary-item total">
+        <span>Total Amount:</span>
+        <span>${{ totalAmount }}</span>
+      </div>
+    </div>
+
+    <div class="payment-methods">
+      <h3>Select Payment Method</h3>
+      <div class="method-options">
+        <div
+          class="method-option"
+          [class.selected]="paymentMethod === 'card'"
+          (click)="selectPaymentMethod('card')"
+        >
+          <i class="fas fa-credit-card"></i>
+          <div class="method-title">Pay with Card</div>
+        </div>
+        <div
+          class="method-option"
+          [class.selected]="paymentMethod === 'door'"
+          (click)="selectPaymentMethod('door')"
+        >
+          <i class="fas fa-door-open"></i>
+          <div class="method-title">Pay at the Door</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="paymentMethod === 'card'" class="payment-form">
+      <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input
+          type="text"
+          id="cardNumber"
+          [(ngModel)]="paymentDetails.cardNumber"
+          (input)="formatCardNumber($event)"
+          placeholder="1234 5678 9012 3456"
+          maxlength="19"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="cardHolder">Card Holder Name</label>
+        <input
+          type="text"
+          id="cardHolder"
+          [(ngModel)]="paymentDetails.cardHolder"
+          placeholder="John Doe"
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label for="expiryDate">Expiry Date</label>
+          <input
+            type="text"
+            id="expiryDate"
+            [(ngModel)]="paymentDetails.expiryDate"
+            (input)="formatExpiryDate($event)"
+            placeholder="MM/YY"
+            maxlength="5"
+          />
+        </div>
+
+        <div class="form-group half">
+          <label for="cvv">CVV</label>
+          <input
+            type="text"
+            id="cvv"
+            [(ngModel)]="paymentDetails.cvv"
+            placeholder="123"
+            maxlength="3"
+          />
+        </div>
+      </div>
+
+      <button
+        class="payment-button"
+        [class.loading]="loading"
+        [disabled]="loading"
+        (click)="processPayment()"
+      >
+        Pay ${{ totalAmount }}
+      </button>
+    </div>
+
+    <div *ngIf="paymentMethod === 'door'" class="door-payment-info">
+      <h3>Pay at the Door Instructions</h3>
+      <ul>
+        <li>
+          <i class="fas fa-info-circle"></i> Please arrive at least 30 minutes
+          before the event
+        </li>
+        <li>
+          <i class="fas fa-money-bill-wave"></i> Bring exact change of ${{
+            totalAmount
+          }}
+        </li>
+        <li>
+          <i class="fas fa-id-card"></i> Bring a valid ID for verification
+        </li>
+        <li>
+          <i class="fas fa-ticket-alt"></i> Your reservation will be confirmed
+          upon payment
+        </li>
+      </ul>
+
+      <button
+        class="payment-button"
+        [class.loading]="loading"
+        [disabled]="loading"
+        (click)="confirmDoorPayment()"
+      >
+        Confirm Door Payment
       </button>
     </div>
   </div>

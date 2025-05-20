@@ -25,16 +25,21 @@ export class EventService {
   approveEvent(id: string): Observable<Event> {
     console.log('[PATCH] Approving event with id:', id);
     return this.http
-      .patch<Event>(`${this.apiUrl}/${id}`, { isVerified: true })
+      .patch<Event>(`${this.apiUrl}/${id}`, {
+        status: 'accepted',
+        isVerified: true,
+        rejectionComment: '',
+      })
       .pipe(tap((res) => console.log('[PATCH] Event approved:', res)));
   }
 
-  rejectEvent(id: string): Observable<Event> {
+  rejectEvent(id: string, rejectionComment: string): Observable<Event> {
     console.log('[PATCH] Rejecting event with id:', id);
     return this.http
       .patch<Event>(`${this.apiUrl}/${id}`, {
+        status: 'rejected',
         isVerified: false,
-        rejected: true,
+        rejectionComment,
       })
       .pipe(tap((res) => console.log('[PATCH] Event rejected:', res)));
   }
@@ -48,8 +53,15 @@ export class EventService {
 
   createEvent(event: Partial<Event>): Observable<Event> {
     console.log('[POST] Creating event:', event);
+    // Ensure new events start with pending status
+    const eventWithStatus = {
+      ...event,
+      status: 'pending',
+      isVerified: false,
+      rejectionComment: '',
+    };
     return this.http
-      .post<Event>(this.apiUrl, event)
+      .post<Event>(this.apiUrl, eventWithStatus)
       .pipe(tap((res) => console.log('[POST] Event created:', res)));
   }
 

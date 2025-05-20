@@ -7,6 +7,7 @@ import { EventsComponent } from './pages/events/events.component';
 import { HomeComponent } from './pages/home/home.component';
 import { MyReservationsComponent } from './pages/my-reservations/my-reservations.component';
 import { AboutComponent } from './pages/about/about.component';
+import { PaymentComponent } from './pages/payment/payment.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,6 +16,11 @@ export const routes: Routes = [
   {
     path: 'my-reservations',
     component: MyReservationsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'payment',
+    component: PaymentComponent,
     canActivate: [AuthGuard],
   },
   {
