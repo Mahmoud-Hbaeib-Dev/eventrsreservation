@@ -35,9 +35,6 @@
     <div class="section-card">
       <div class="section-header">
         <h2>Reservation History</h2>
-        <button class="view-all-btn" routerLink="/client/reservations">
-          View All
-        </button>
       </div>
       <div class="reservations-list" *ngIf="reservations.length > 0">
         <div
@@ -115,9 +112,6 @@
     <div class="section-card">
       <div class="section-header">
         <h2>Payment History</h2>
-        <button class="view-all-btn" routerLink="/client/payments">
-          View All
-        </button>
       </div>
       <div class="payments-list" *ngIf="payments.length > 0">
         <div class="payment-item" *ngFor="let payment of payments">
