@@ -393,8 +393,8 @@
       "numberOfGuests": 1,
       "numberOfTickets": 1,
       "totalPrice": 20,
-      "status": "confirmed",
-      "paymentStatus": "paid",
+      "status": "cancelled",
+      "paymentStatus": "refunded",
       "createdAt": "2025-05-17T19:38:22.472Z",
       "updatedAt": "2025-05-17T19:38:22.472Z"
     },
@@ -407,8 +407,8 @@
       "numberOfGuests": 1,
       "numberOfTickets": 1,
       "totalPrice": 20,
-      "status": "accepted",
-      "paymentStatus": "pending",
+      "status": "cancelled",
+      "paymentStatus": "refunded",
       "createdAt": "2025-05-17T20:30:38.032Z",
       "updatedAt": "2025-05-17T20:30:38.032Z"
     },
@@ -453,6 +453,34 @@
       "paymentStatus": "paid",
       "createdAt": "2025-05-20T14:00:38.388Z",
       "updatedAt": "2025-05-20T14:00:38.388Z"
+    },
+    {
+      "id": "11b0",
+      "eventId": "3c17",
+      "userId": "LeaJredxOfVIy6iuVSgPb2Zr0xi2",
+      "eventName": "new1",
+      "eventDate": "2026-05-20",
+      "numberOfGuests": 1,
+      "numberOfTickets": 1,
+      "totalPrice": 10,
+      "status": "confirmed",
+      "paymentStatus": "paid",
+      "createdAt": "2025-05-22T14:54:40.847Z",
+      "updatedAt": "2025-05-22T14:54:40.847Z"
+    },
+    {
+      "id": "8365",
+      "eventId": "3c17",
+      "userId": "LeaJredxOfVIy6iuVSgPb2Zr0xi2",
+      "eventName": "new1",
+      "eventDate": "2026-05-20",
+      "numberOfGuests": 1,
+      "numberOfTickets": 5,
+      "totalPrice": 50,
+      "status": "confirmed",
+      "paymentStatus": "paid",
+      "createdAt": "2025-05-22T15:03:14.142Z",
+      "updatedAt": "2025-05-22T15:03:14.142Z"
     }
   ]
 }

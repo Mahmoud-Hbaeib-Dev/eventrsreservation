@@ -40,6 +40,12 @@ export class DashboardComponent implements OnInit {
   loading = false;
   error = '';
 
+  // Pagination state
+  reservationPage = 1;
+  reservationPageSize = 4;
+  paymentPage = 1;
+  paymentPageSize = 4;
+
   constructor(
     public authService: AuthService,
     private reservationService: ReservationService,
@@ -146,6 +152,36 @@ export class DashboardComponent implements OnInit {
         return 'x-circle';
       default:
         return 'help-circle';
+    }
+  }
+
+  get paginatedReservations(): Reservation[] {
+    const start = (this.reservationPage - 1) * this.reservationPageSize;
+    return this.reservations.slice(start, start + this.reservationPageSize);
+  }
+
+  get reservationTotalPages(): number {
+    return Math.ceil(this.reservations.length / this.reservationPageSize) || 1;
+  }
+
+  setReservationPage(page: number) {
+    if (page >= 1 && page <= this.reservationTotalPages) {
+      this.reservationPage = page;
+    }
+  }
+
+  get paginatedPayments(): Payment[] {
+    const start = (this.paymentPage - 1) * this.paymentPageSize;
+    return this.payments.slice(start, start + this.paymentPageSize);
+  }
+
+  get paymentTotalPages(): number {
+    return Math.ceil(this.payments.length / this.paymentPageSize) || 1;
+  }
+
+  setPaymentPage(page: number) {
+    if (page >= 1 && page <= this.paymentTotalPages) {
+      this.paymentPage = page;
     }
   }
 }

@@ -40,7 +40,10 @@
         </button>
       </div>
       <div class="reservations-list" *ngIf="reservations.length > 0">
-        <div class="reservation-item" *ngFor="let reservation of reservations">
+        <div
+          class="reservation-item"
+          *ngFor="let reservation of paginatedReservations"
+        >
           <div class="reservation-header">
             <h3>{{ reservation.event?.title || "Unknown Event" }}</h3>
             <span
@@ -81,6 +84,30 @@
         <i data-feather="calendar"></i>
         <p>No reservations found</p>
         <button class="primary-btn" routerLink="/events">Browse Events</button>
+      </div>
+      <div class="pagination-controls" *ngIf="reservationTotalPages > 1">
+        <button
+          (click)="setReservationPage(reservationPage - 1)"
+          [disabled]="reservationPage === 1"
+        >
+          &laquo; Prev
+        </button>
+        <button
+          *ngFor="
+            let page of [].constructor(reservationTotalPages);
+            let i = index
+          "
+          (click)="setReservationPage(i + 1)"
+          [class.active]="reservationPage === i + 1"
+        >
+          {{ i + 1 }}
+        </button>
+        <button
+          (click)="setReservationPage(reservationPage + 1)"
+          [disabled]="reservationPage === reservationTotalPages"
+        >
+          Next &raquo;
+        </button>
       </div>
     </div>
 
@@ -124,6 +151,27 @@
       <div class="empty-state" *ngIf="payments.length === 0">
         <i data-feather="credit-card"></i>
         <p>No payment history found</p>
+      </div>
+      <div class="pagination-controls" *ngIf="paymentTotalPages > 1">
+        <button
+          (click)="setPaymentPage(paymentPage - 1)"
+          [disabled]="paymentPage === 1"
+        >
+          &laquo; Prev
+        </button>
+        <button
+          *ngFor="let page of [].constructor(paymentTotalPages); let i = index"
+          (click)="setPaymentPage(i + 1)"
+          [class.active]="paymentPage === i + 1"
+        >
+          {{ i + 1 }}
+        </button>
+        <button
+          (click)="setPaymentPage(paymentPage + 1)"
+          [disabled]="paymentPage === paymentTotalPages"
+        >
+          Next &raquo;
+        </button>
       </div>
     </div>
   </div>

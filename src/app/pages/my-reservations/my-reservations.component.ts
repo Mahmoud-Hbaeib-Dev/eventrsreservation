@@ -236,30 +236,30 @@ export class MyReservationsComponent implements OnInit {
     const pricePerTicket = reservation.totalPrice / reservation.numberOfTickets;
     const newTotalPrice = pricePerTicket * this.editedTickets;
 
-    console.log('Navigating to payment with params:', {
-      reservationId: reservation.id,
-      tickets: this.editedTickets,
-      totalAmount: newTotalPrice,
-      eventName: reservation.eventName,
-      eventDate: reservation.eventDate,
-      pricePerTicket: pricePerTicket,
-    });
-
-    this.router
-      .navigate(['/payment'], {
-        queryParams: {
-          reservationId: reservation.id,
-          tickets: this.editedTickets,
-          totalAmount: newTotalPrice,
-          eventName: reservation.eventName,
-          eventDate: reservation.eventDate,
-          pricePerTicket: pricePerTicket,
-        },
+    // Update the reservation in the backend before navigating to payment
+    this.reservationService
+      .updateReservation(reservation.id.toString(), {
+        numberOfTickets: this.editedTickets,
+        totalPrice: newTotalPrice,
       })
-      .then((success) => {
-        if (!success) {
-          this.notificationService.error('Failed to navigate to payment page');
-        }
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/payment'], {
+            queryParams: {
+              reservationId: reservation.id,
+              tickets: this.editedTickets,
+              totalAmount: newTotalPrice,
+              eventName: reservation.eventName,
+              eventDate: reservation.eventDate,
+              pricePerTicket: pricePerTicket,
+            },
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            'Failed to update reservation. Please try again.'
+          );
+        },
       });
   }
 
