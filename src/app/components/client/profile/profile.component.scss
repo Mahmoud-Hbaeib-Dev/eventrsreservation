@@ -89,7 +89,7 @@ body,
     display: flex;
     align-items: center;
     gap: 2.5rem;
-    background: color.scale($card-bg, $lightness: 4%);
+    background: color.adjust($card-bg, $lightness: 4%);
     border-radius: $radius;
     box-shadow: $shadow;
     padding: 2.5rem 2rem;
@@ -251,7 +251,7 @@ body,
         border-radius: 12px;
         transition: $transition;
         &:hover {
-            background: lighten($card-bg, 4%);
+            background: color.adjust($card-bg, $lightness: 4%);
             transform: translateX(5px);
         }
         i {
@@ -383,7 +383,7 @@ body,
     color: $text-main;
     font-weight: 700;
     &:hover {
-        background: lighten($card-bg, 4%);
+        background: color.adjust($card-bg, $lightness: 4%);
         transform: translateY(-2px);
     }
 }

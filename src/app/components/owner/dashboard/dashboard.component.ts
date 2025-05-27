@@ -9,7 +9,8 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import feather from 'feather-icons';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const feather = require('feather-icons'); // TODO: Switch to ESM import when available
 import { ChartModule } from 'primeng/chart';
 import { VenueService } from '../../../services/venue.service';
 import { EventService } from '../../../services/event.service';

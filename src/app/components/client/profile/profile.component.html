@@ -9,15 +9,15 @@
     <div class="profile-header-card">
       <div class="profile-avatar">
         <div class="avatar-circle">
-          <ng-container *ngIf="user?.avatar; else initialsOrIcon">
+          <ng-container *ngIf="user.avatar; else initialsOrIcon">
             <img [src]="user.avatar" alt="Avatar" class="avatar-img" />
           </ng-container>
           <ng-template #initialsOrIcon>
-            <span *ngIf="user?.username">{{
-              getInitials(user?.username || "")
+            <span *ngIf="user.username">{{
+              getInitials(user.username || "")
             }}</span>
             <i
-              *ngIf="!user?.username"
+              *ngIf="!user.username"
               class="default-avatar-icon"
               data-feather="user"
             ></i>
@@ -45,9 +45,9 @@
         </button>
       </div>
       <div class="profile-header-info">
-        <h2 class="profile-username">{{ user?.username || "User" }}</h2>
-        <div class="profile-email">{{ user?.email || "No email" }}</div>
-        <span class="profile-role">{{ user?.role || "Client" }}</span>
+        <h2 class="profile-username">{{ user.username || "User" }}</h2>
+        <div class="profile-email">{{ user.email || "No email" }}</div>
+        <span class="profile-role">{{ user.role || "Client" }}</span>
       </div>
     </div>
 
@@ -68,9 +68,9 @@
               <label>Username</label>
               <p>
                 {{
-                  user?.username
+                  user.username
                     ? user.username
-                    : user?.email
+                    : user.email
                     ? user.email
                     : "-"
                 }}
@@ -78,21 +78,21 @@
             </div>
             <div class="info-item">
               <label>Email</label>
-              <p>{{ user?.email || "-" }}</p>
+              <p>{{ user.email || "-" }}</p>
             </div>
             <div class="info-item">
               <label>Full Name</label>
               <p>
-                {{ (user?.firstName || "") + " " + (user?.lastName || "") }}
+                {{ (user.firstName || "") + " " + (user.lastName || "") }}
               </p>
             </div>
             <div class="info-item">
               <label>Phone</label>
-              <p>{{ user?.phone || "-" }}</p>
+              <p>{{ user.phone || "-" }}</p>
             </div>
             <div class="info-item">
               <label>Location</label>
-              <p>{{ user?.location || "-" }}</p>
+              <p>{{ user.location || "-" }}</p>
             </div>
             <div class="info-item">
               <label>Member Since</label>

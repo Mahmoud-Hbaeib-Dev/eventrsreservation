@@ -99,6 +99,18 @@
       "isOnline": true,
       "location": "sfax",
       "avatar": "https://r2.fivemanage.com/image/LdenZxDV3PcA.jpg"
+    },
+    {
+      "id": "4ZJcNMGJV2Yzn8fPbuWENM7jXWz2",
+      "email": "oussemachaieb7@gmail.com",
+      "username": "don",
+      "password": "123456",
+      "role": "owner",
+      "firstName": "",
+      "lastName": "",
+      "phone": "",
+      "createdAt": "2025-05-27T23:16:52.627Z",
+      "updatedAt": "2025-05-27T23:16:52.627Z"
     }
   ],
   "venues": [
