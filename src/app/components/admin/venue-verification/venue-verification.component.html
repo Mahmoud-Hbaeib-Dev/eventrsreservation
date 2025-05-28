@@ -1,25 +1,29 @@
 <div class="venue-verification">
-    <h2>Venue Verification</h2>
-    <div class="verification-list">
-        <table class="verification-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let venue of venues">
-                    <td>{{ venue.name }}</td>
-                    <td>{{ venue.description }}</td>
-                    <td>
-                        {{ (venue.address ? venue.address + ", " : "") + (venue.city || venue.location || "-") }}
-                    </td>
-                    <td>
-                        <span *ngIf="venue.isVerified" class="status accepted">Accepted</span
+  <h2>Venue Verification</h2>
+  <div class="verification-list">
+    <table class="verification-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let venue of venues">
+          <td>{{ venue.name }}</td>
+          <td>{{ venue.description }}</td>
+          <td>
+            {{
+              (venue.address ? venue.address + ", " : "") +
+                (venue.city || venue.location || "-")
+            }}
+          </td>
+          <td>
+            <span *ngIf="venue.isVerified" class="status accepted"
+              >Accepted</span
             >
             <span
               *ngIf="!venue.isVerified && venue.rejected"

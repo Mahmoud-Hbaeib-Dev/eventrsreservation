@@ -129,6 +129,46 @@ export class CreateEventComponent implements OnInit {
   }
 
   submitEvent() {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      this.snackBar.open('You must be logged in to create an event.', 'Close', {
+        duration: 3000,
+        panelClass: 'snackbar-error',
+      });
+      return;
+    }
+    // Restrict event creation based on owner status
+    if (currentUser.role === 'owner') {
+      if (
+        currentUser.status !== 'active' &&
+        currentUser.status !== 'accepted'
+      ) {
+        if (currentUser.status === 'pending') {
+          this.snackBar.open(
+            'Your account is pending approval. You cannot create events until your account is accepted by the admin.',
+            'Close',
+            { duration: 4000, panelClass: 'snackbar-error' }
+          );
+        } else if (
+          currentUser.status === 'refused' ||
+          currentUser.status === 'rejected'
+        ) {
+          this.snackBar.open(
+            'Your account has been rejected. You cannot create events.',
+            'Close',
+            { duration: 4000, panelClass: 'snackbar-error' }
+          );
+        } else {
+          this.snackBar.open(
+            'Your account is not active. You cannot create events.',
+            'Close',
+            { duration: 4000, panelClass: 'snackbar-error' }
+          );
+        }
+        return;
+      }
+    }
+
     if (this.eventForm.invalid || !this.ownerVenue) return;
 
     const eventData = {

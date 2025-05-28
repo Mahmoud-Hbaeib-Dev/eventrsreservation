@@ -145,6 +145,9 @@ export class EventsComponent implements OnInit {
   }
 
   reserveEvent(event: Event): void {
+    // Always refresh user status before checking
+    this.authService.refreshCurrentUser();
+
     // Check if event is in the past
     if (this.isEventPassed(event)) {
       this.notificationService.warning('This event has already passed');
@@ -159,7 +162,31 @@ export class EventsComponent implements OnInit {
       return;
     }
 
-    console.log('Creating reservation for user:', currentUser);
+    // Restrict reservation based on user status
+    if (currentUser.role === 'client') {
+      if (
+        currentUser.status !== 'active' &&
+        currentUser.status !== 'accepted'
+      ) {
+        if (currentUser.status === 'pending') {
+          this.notificationService.warning(
+            'Your account is pending approval. You cannot make reservations until your account is accepted by the admin.'
+          );
+        } else if (
+          currentUser.status === 'refused' ||
+          currentUser.status === 'rejected'
+        ) {
+          this.notificationService.error(
+            'Your account has been rejected. You cannot make reservations.'
+          );
+        } else {
+          this.notificationService.warning(
+            'Your account is not active. You cannot make reservations.'
+          );
+        }
+        return;
+      }
+    }
 
     // Default to 1 ticket if not specified
     const numberOfTickets = 1;
@@ -180,23 +207,17 @@ export class EventsComponent implements OnInit {
       updatedAt: new Date(),
     };
 
-    console.log('Reservation payload:', reservation);
-
     // Call the reservation service to create the reservation
     this.reservationService.createReservation(reservation).subscribe({
       next: (createdReservation) => {
-        console.log('Reservation created successfully:', createdReservation);
         this.notificationService.success(
           `Reservation for "${event.title}" created successfully!`
         );
-
-        // Give the user time to see the notification before navigating
         setTimeout(() => {
           this.router.navigate(['/my-reservations']);
         }, 1500);
       },
       error: (error) => {
-        console.error('Error creating reservation:', error);
         this.notificationService.error(
           'Failed to create reservation. Please try again.'
         );

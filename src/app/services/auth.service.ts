@@ -124,6 +124,7 @@ export class AuthService {
         updatedAt: new Date(),
       };
 
+      console.log('New user to save:', newUser); // Log the newUser object
       try {
         // Save to db.json
         await this.http.post(`${this.apiUrl}/users`, newUser).toPromise();
@@ -221,5 +222,19 @@ export class AuthService {
 
   public setCurrentUser(user: AppUser) {
     this.currentUserSubject.next(user);
+  }
+
+  refreshCurrentUser() {
+    const user = this.getCurrentUser();
+    if (user && user.email) {
+      this.http
+        .get<AppUser[]>(`${this.apiUrl}/users?email=${user.email}`)
+        .subscribe((users) => {
+          const dbUser = users?.[0];
+          if (dbUser) {
+            this.currentUserSubject.next({ ...user, ...dbUser });
+          }
+        });
+    }
   }
 }

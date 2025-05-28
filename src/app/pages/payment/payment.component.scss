@@ -244,39 +244,46 @@
     }
     .payment-button {
       width: 100%;
-      padding: 1rem;
-      background: #4caf50;
-      color: white;
+      padding: 1.1rem;
+      background: linear-gradient(90deg, #00ffb8 0%, #00b8ff 100%);
+      color: #181c28;
       border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      font-weight: 600;
+      border-radius: 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      &:hover {
-        background: #45a049;
+      box-shadow: 0 2px 16px 0 rgba(0, 255, 184, 0.15);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      i,
+      svg {
+        font-size: 1.2rem;
+        color: #00ffb8;
+        background: #181c28;
+        border-radius: 50%;
+        padding: 0.2rem;
+        margin-right: 0.5rem;
+      }
+      &:hover:not(:disabled) {
+        background: linear-gradient(90deg, #00b8ff 0%, #00ffb8 100%);
+        box-shadow: 0 4px 32px 0 rgba(0, 255, 184, 0.25);
+        color: #181c28;
+        transform: translateY(-2px) scale(1.03);
       }
       &:disabled {
-        background: #cccccc;
+        background: #4a5568;
+        color: #b0b8c9;
         cursor: not-allowed;
-      }
-      &.loading {
-        position: relative;
-        color: transparent;
-        &::after {
-          content: "";
-          position: absolute;
-          width: 20px;
-          height: 20px;
-          top: 50%;
-          left: 50%;
-          margin: -10px 0 0 -10px;
-          border: 2px solid #1a1f2c;
-          border-top-color: transparent;
-          border-radius: 50%;
-          animation: button-loading-spinner 1s linear infinite;
-          box-shadow: 0 0 10px rgba(0, 255, 184, 0.3);
-        }
+        opacity: 0.7;
+        box-shadow: none;
+        transform: none;
       }
     }
   }
@@ -299,5 +306,50 @@
   }
   .fa-spin {
     animation: spin 1s linear infinite;
+  }
+}
+
+.payment-button {
+  width: 100%;
+  padding: 1.1rem;
+  background: linear-gradient(90deg, #00ffb8 0%, #00b8ff 100%);
+  color: #181c28;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 16px 0 rgba(0, 255, 184, 0.15);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  i,
+  svg {
+    font-size: 1.2rem;
+    color: #00ffb8;
+    background: #181c28;
+    border-radius: 50%;
+    padding: 0.2rem;
+    margin-right: 0.5rem;
+  }
+  &:hover:not(:disabled) {
+    background: linear-gradient(90deg, #00b8ff 0%, #00ffb8 100%);
+    box-shadow: 0 4px 32px 0 rgba(0, 255, 184, 0.25);
+    color: #181c28;
+    transform: translateY(-2px) scale(1.03);
+  }
+  &:disabled {
+    background: #4a5568;
+    color: #b0b8c9;
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+    transform: none;
   }
 }

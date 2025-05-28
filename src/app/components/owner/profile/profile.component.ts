@@ -5,6 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FivemanageImageService } from '../../../services/fivemanage-image.service';
 import { UserService } from '../../../services/user.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-owner-profile',
@@ -32,7 +33,8 @@ export class ProfileComponent implements OnInit {
     private venueService: VenueService,
     private authService: AuthService,
     private imageService: FivemanageImageService,
-    private userService: UserService
+    private userService: UserService,
+    private notificationService: NotificationService
   ) {
     this.venueForm = this.fb.group({
       name: [''],
@@ -161,8 +163,33 @@ export class ProfileComponent implements OnInit {
       // POST: create new venue for this owner
       const currentUser = this.authService.getCurrentUser();
       if (!currentUser) {
-        alert('User not found. Please login again.');
+        this.notificationService.error('User not found. Please login again.');
         return;
+      }
+      // Restrict venue creation based on owner status
+      if (currentUser.role === 'owner') {
+        if (
+          currentUser.status !== 'active' &&
+          currentUser.status !== 'accepted'
+        ) {
+          if (currentUser.status === 'pending') {
+            this.notificationService.warning(
+              'Your account is pending approval. You cannot create a venue until your account is accepted by the admin.'
+            );
+          } else if (
+            currentUser.status === 'refused' ||
+            currentUser.status === 'rejected'
+          ) {
+            this.notificationService.error(
+              'Your account has been rejected. You cannot create a venue.'
+            );
+          } else {
+            this.notificationService.error(
+              'Your account is not active. You cannot create a venue.'
+            );
+          }
+          return;
+        }
       }
 
       const newVenue = {
@@ -187,18 +214,20 @@ export class ProfileComponent implements OnInit {
           this.imagesPreview = venue.images || [];
           this.editMode = false;
           this.creatingVenue = false;
-          alert('Venue created successfully!');
+          this.notificationService.success('Venue created successfully!');
         },
         error: (error) => {
           console.error('Error creating venue:', error);
-          alert('Failed to create venue. Please try again.');
+          this.notificationService.error(
+            'Failed to create venue. Please try again.'
+          );
         },
       });
       return;
     }
 
     if (!this.venue) {
-      alert('No venue found to update.');
+      this.notificationService.error('No venue found to update.');
       return;
     }
 
@@ -221,11 +250,13 @@ export class ProfileComponent implements OnInit {
         this.venue = venue;
         this.imagesPreview = venue.images || [];
         this.editMode = false;
-        alert('Venue updated successfully!');
+        this.notificationService.success('Venue updated successfully!');
       },
       error: (error) => {
         console.error('Error updating venue:', error);
-        alert('Failed to update venue. Please try again.');
+        this.notificationService.error(
+          'Failed to update venue. Please try again.'
+        );
       },
     });
   }
@@ -269,10 +300,10 @@ export class ProfileComponent implements OnInit {
         this.editOwnerMode = false;
         this.ownerForm.patchValue(user);
         this.authService.setCurrentUser(user);
-        alert('Profile updated!');
+        this.notificationService.success('Profile updated!');
       },
       error: (err) => {
-        alert('Failed to update profile.');
+        this.notificationService.error('Failed to update profile.');
       },
     });
   }

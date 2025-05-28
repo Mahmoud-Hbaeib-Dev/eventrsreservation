@@ -16,6 +16,8 @@ interface Reservation {
   createdAt: string;
   paymentMethod?: string;
   event?: Event;
+  numberOfTickets: number;
+  paymentStatus: string;
 }
 
 interface Payment {
@@ -25,6 +27,11 @@ interface Payment {
   status: string;
   eventTitle: string;
   paymentMethod: string;
+  reservation?: {
+    event?: {
+      title?: string;
+    };
+  };
 }
 
 @Component({
@@ -45,6 +52,10 @@ export class DashboardComponent implements OnInit {
   reservationPageSize = 4;
   paymentPage = 1;
   paymentPageSize = 4;
+
+  // Modal state
+  selectedReservation: Reservation | null = null;
+  selectedPayment: Payment | null = null;
 
   constructor(
     public authService: AuthService,
@@ -183,5 +194,23 @@ export class DashboardComponent implements OnInit {
     if (page >= 1 && page <= this.paymentTotalPages) {
       this.paymentPage = page;
     }
+  }
+
+  openReservationDetails(reservation: Reservation) {
+    this.selectedReservation = reservation;
+  }
+
+  closeReservationDetails(event: MouseEvent) {
+    event.stopPropagation();
+    this.selectedReservation = null;
+  }
+
+  openPaymentDetails(payment: Payment) {
+    this.selectedPayment = payment;
+  }
+
+  closePaymentDetails(event: MouseEvent) {
+    event.stopPropagation();
+    this.selectedPayment = null;
   }
 }

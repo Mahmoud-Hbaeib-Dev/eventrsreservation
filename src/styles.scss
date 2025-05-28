@@ -2,154 +2,163 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 :root {
-  --primary-color: #00b4d8;
-  --primary-hover: #0096b3;
-  --background-dark: #1a1a1a;
-  --background-darker: #141414;
-  --surface-dark: #2d2d2d;
-  --surface-darker: #404040;
-  --text-primary: #ffffff;
-  --text-secondary: #808080;
-  --error-color: #ff4d4d;
-  --success-color: #4caf50;
-  --warning-color: #ff9800;
+    --primary-color: #00b4d8;
+    --primary-hover: #0096b3;
+    --background-dark: #1a1a1a;
+    --background-darker: #141414;
+    --surface-dark: #2d2d2d;
+    --surface-darker: #404040;
+    --text-primary: #ffffff;
+    --text-secondary: #808080;
+    --error-color: #ff4d4d;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: "Inter", sans-serif;
-  background-color: var(--background-dark);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
 }
+
 
 /* Scrollbar Styles */
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-darker);
+    background: var(--background-darker);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--surface-darker);
-  border-radius: 4px;
+    background: var(--surface-darker);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-color);
+    background: var(--primary-color);
 }
+
 
 /* Global Link Styles */
 
 a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
-  &:hover {
-    color: var(--primary-hover);
-  }
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    &:hover {
+        color: var(--primary-hover);
+    }
 }
+
 
 /* Global Button Styles */
 
 button {
-  font-family: "Inter", sans-serif;
+    font-family: "Inter", sans-serif;
 }
+
 
 /* Global Input Styles */
 
 input,
 textarea,
 select {
-  font-family: "Inter", sans-serif;
-  background-color: var(--surface-dark);
-  color: var(--text-primary);
-  border: 1px solid var(--surface-darker);
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  transition: all 0.3s ease;
-  &:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.25);
-  }
-  &::placeholder {
-    color: var(--text-secondary);
-  }
+    font-family: "Inter", sans-serif;
+    background-color: var(--surface-dark);
+    color: var(--text-primary);
+    border: 1px solid var(--surface-darker);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.25);
+    }
+    &::placeholder {
+        color: var(--text-secondary);
+    }
 }
+
 
 /* Card Styles */
 
 .card {
-  background-color: var(--surface-dark);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background-color: var(--surface-dark);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+
 
 /* Container Styles */
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
+
 
 /* Utility Classes */
 
 .text-primary {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .text-error {
-  color: var(--error-color);
+    color: var(--error-color);
 }
 
 .text-success {
-  color: var(--success-color);
+    color: var(--success-color);
 }
 
 .text-warning {
-  color: var(--warning-color);
+    color: var(--warning-color);
 }
 
 .bg-surface {
-  background-color: var(--surface-dark);
+    background-color: var(--surface-dark);
 }
 
 .bg-darker {
-  background-color: var(--background-darker);
+    background-color: var(--background-darker);
 }
+
 
 /* Animation Classes */
 
 .fade-in {
-  animation: fadeIn 0.3s ease-in;
+    animation: fadeIn 0.3s ease-in;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
+
 
 /* Responsive Typography */
 
 @media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
+    html {
+        font-size: 14px;
+    }
 }

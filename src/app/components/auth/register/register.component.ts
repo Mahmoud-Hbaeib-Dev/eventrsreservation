@@ -47,19 +47,22 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.errorMessage = ''; // Clear any previous errors
       const { email, password, username, role } = this.registerForm.value;
+      console.log('Registration role:', role); // Log the role value
       this.authService
         .register(email, password, username, role)
         .then((user) => {
           console.log('Registration successful:', user);
-          // Redirect to the correct dashboard page based on role
-          if (role === 'owner') {
-            this.router.navigate(['/owner/dashboard']);
-          } else if (role === 'admin') {
-            this.router.navigate(['/admin/dashboard']);
-          } else {
-            this.router.navigate(['/client/dashboard']);
-          }
-          // this.router.navigate(['/auth/login']); // Old behavior
+          // Refresh current user to get correct role from backend
+          this.authService.refreshCurrentUser();
+          setTimeout(() => {
+            if (role === 'owner') {
+              this.router.navigate(['/owner/dashboard']);
+            } else if (role === 'admin') {
+              this.router.navigate(['/admin/dashboard']);
+            } else {
+              this.router.navigate(['/client/dashboard']);
+            }
+          }, 300); // Short delay to allow refresh
         })
         .catch((error) => {
           console.error('Registration failed:', error);
